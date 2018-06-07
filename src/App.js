@@ -14,15 +14,28 @@ class App extends Component {
         body: 'Redux 공부',
         complete: false
       }
-    ]
+    ],
+    newTodoBody:''
+  }
+
+  handleInputChange = e => {
+    this.setState({
+      newTodoBody: e.target.value
+    })
   }
 
   render() {
-    const {todos} = this.state;
-    
+    const {todos, newTodoBody} = this.state;
+
     return (
       <div>
         <h1>할일 목록</h1>
+        <label>
+          새 할일
+          <input type="text" value={newTodoBody} onChange={this.handleInputChange}/>
+          <button>추가</button>
+          </label>
+
         <ul>
           {
             todos.map(todo => (
