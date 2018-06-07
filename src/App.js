@@ -43,7 +43,24 @@ class App extends Component {
     }
   }
 
-  handleCompleteClick = e => {
+  handleTodoItemComplete = id => {
+    this.setState({
+        todos: this.state.todos.map(t => {
+          const newTodo = {
+            ...t
+          };
+          if(t.id === id){
+            newTodo.complete = true;
+          }
+        return newTodo
+      })
+    })
+  }
+
+  handleTodoItemDelete = id => {
+    this.setState({
+      todos: this.state.todos.filter(t => id !== t.id)
+    })
 
   }
 
@@ -62,29 +79,12 @@ class App extends Component {
         <ul>
           {
             todos.map(todo => (
-              <li className={todo.complete ? 'complete': ''} key={todo.id}>
-              {todo.body}
-              <button onClick={e => {
-                this.setState({
-                  todos: todos.map(t => {
-                    const newTodo = {
-                      ...t
-                    };
-                    if(t.id === todo.id){
-                      newTodo.complete = true;
-                    }
-                    return newTodo
-                  })
-                })
-                todo.id
-              }}>완료</button>
-
-              <button onClick={e => {
-                this.setState({
-                  todos: todos.filter(t => todo.id !== t.id)
-                })
-              }}>삭제</button>
-              </li>
+            <TodoItem
+            key={todo.id}
+            {...todo}
+            onComplete={this.handleTodoItemComplete} 
+            onDelete={this.handleTodoItemDelete} 
+            />
             ))
           }
         </ul>
@@ -93,4 +93,28 @@ class App extends Component {
   }
 }
 
+
+class TodoItem extends Component{
+  render(){
+    const {id, body, complete, onComplete, onDelete} = this.props;
+
+    return( 
+    <li className={complete ? 'complete': ''} key={id}>
+      {body}
+      <button onClick={e => {
+        onComplete(id);
+      }}>완료</button>
+
+      <button onClick={e => {
+        // this.setState({
+        //   todos: todos.filter(t => id !== t.id)
+        // })
+        onDelete(id);
+      }}>삭제</button>
+    </li>
+    )
+  }
+    
+
+}
 export default App;
