@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 
+let count = 0;
 
 class App extends Component {
   state = {
     todos: [
       {
-        id: 1,
+        id: count++,
         body: 'React 공부',
         complete: true
       },
       {
-        id: 2,
+        id: count++,
         body: 'Redux 공부',
         complete: false
       }
@@ -24,6 +25,28 @@ class App extends Component {
     })
   }
 
+  handleButtonClick = e => {
+    if(this.state.newTodoBody){
+      const newTodo = {
+        body: this.state.newTodoBody,
+        complete: false,
+        id: count++
+      }
+
+      this.setState({
+        todos: [
+          ...this.state.todos,
+          newTodo
+        ],
+        newTodoBody: ''
+      });
+    }
+  }
+
+  handleCompleteClick = e => {
+
+  }
+
   render() {
     const {todos, newTodoBody} = this.state;
 
@@ -33,13 +56,29 @@ class App extends Component {
         <label>
           새 할일
           <input type="text" value={newTodoBody} onChange={this.handleInputChange}/>
-          <button>추가</button>
+          <button onClick={this.handleButtonClick}>추가</button>
           </label>
 
         <ul>
           {
             todos.map(todo => (
-              <li className={todo.complete ? 'complete': ''} key={todo.id}>{todo.body}</li>
+              <li className={todo.complete ? 'complete': ''} key={todo.id}>
+              {todo.body}
+              <button onClick={e => {
+                this.setState({
+                  todos: todos.map(t => {
+                    const newTodo = {
+                      ...t
+                    };
+                    if(t.id === todo.id){
+                      newTodo.complete = true;
+                    }
+                    return newTodo
+                  })
+                })
+                todo.id
+              }}>완료</button>
+              </li>
             ))
           }
         </ul>
