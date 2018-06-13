@@ -3,27 +3,27 @@ import React, { Component } from 'react'; // 노드 모듈스 안에 라이브�
 import TodoPage from './pages/TodoPage'
 import LoginPage from './pages/LoginPage'
 
-class App extends Component {
-  state={
-    page: 'login'
-  }
+import {PageProvider, PageConsumer} from './contexts/PageContext'
+import {UserProvider} from './contexts/UserContext';
 
-  goToTodoPage = () => (
-    this.setState({
-      page: 'todo'
-    })
-  )
-  
+class App extends Component {
   render() {
-    const {page} = this.state
     return (
-      <div>
-        {page === 'login'? (
-          <LoginPage onLogin={this.goToTodoPage} />
-        ): (
-          <TodoPage />
-        )}
-      </div>
+      <PageProvider>
+        <PageConsumer>
+          {value => (
+            <UserProvider onLogin={value.goToTodoPage}>
+              {
+                value.page === 'login' ? (
+                  <LoginPage />
+                ) : (
+                  <TodoPage />
+                )
+              }
+            </UserProvider>
+          )}
+        </PageConsumer>
+      </PageProvider>
     )
   }
 }

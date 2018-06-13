@@ -1,13 +1,9 @@
 import React, { Component } from "react"; // 노드 모듈스 안에 라이브러리 모듈을 쓸 떄는 경로를 안쓴다.
-import axios from 'axios';
 
 import TodoList from '../components/TodoList';
 import TodoForm from '../components/TodoForm';
+import todoAPI from '../todoAPI'
 
-
-const todoAPI = axios.create({
-  baseURL: process.env.REACT_APP_API_URL
-})
 
 export default class TodoPage extends Component {
   state = {
