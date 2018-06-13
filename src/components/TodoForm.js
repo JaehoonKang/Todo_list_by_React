@@ -5,7 +5,7 @@ export default class TodoForm extends React.Component {
       newTodoBody: ''
   }
   handleInputChange = e => {
-      this.setState = ({
+      this.setState({
           newTodoBody: e.target.value
       });
   }
